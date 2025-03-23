@@ -1,0 +1,6 @@
+asyncio
+google-auth
+google-cloud-bigquery
+flask
+aiogram
+dotenv

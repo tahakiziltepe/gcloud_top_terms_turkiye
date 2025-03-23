@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Terms of Turkiye</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Top Terms of Turkiye</h1>
+        {% if top_terms_of_week %}
+        <h3>Leaders of This Week</h3>
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th> | </th>
+                <th>Date</th>
+                <th> | </th>
+                <th>Term</th>
+            </tr>
+            {% for top_term in top_terms_of_week %}
+                <tr>
+                    <td>{{ top_term.rank }}</td>
+                    <th> | </th>
+                    <td>{{ top_term.date }}</td>
+                    <td> | </td>
+                    <td>{{ top_term.term }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+
+        {% if top_terms_of_yesterday %}
+        <h3>Leaders of Yesterday ({{ top_terms_of_yesterday[0].date }})</h3>
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th> | </th>
+                <th>Term</th>
+            </tr>
+            {% for top_term in top_terms_of_yesterday %}
+                <tr>
+                    <td>{{ top_term.rank }}</td>
+                    <th> | </th>
+                    <td>{{ top_term.term }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
