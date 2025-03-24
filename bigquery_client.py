@@ -1,6 +1,6 @@
 from google.cloud import bigquery
 import google.auth
-
+from datetime import datetime
 _, project = google.auth.default()
 
 client = bigquery.Client(project=project)
@@ -8,7 +8,17 @@ client = bigquery.Client(project=project)
 def query(query: str):
     return client.query(query)
 
+def create_job_config(table_name: str):
+    return bigquery.QueryJobConfig(
+        destination=bigquery.TableReference(
+            project=project,
+            dataset='top_terms',
+            table=table_name+str(datetime.now().strftime('%Y%m%d'))
+        ),
+        write_disposition='WRITE_TRUNCATE')
+
 def get_top_terms_of_week_turkiye():
+    job_config = create_job_config('top_terms_of_week_turkiye')
     query = """
         set @@query_label = 'project:top_terms,project_query:top_terms_of_week_turkiye';
         with max_week as (
@@ -24,7 +34,7 @@ def get_top_terms_of_week_turkiye():
         )
         select * from terms_of_week
         """
-    result = client.query(query)
+    result = client.query(query, job_config=job_config)
     return [dict(row) for row in result]
 
 def get_top_terms_of_yesterday_turkiye():
@@ -75,3 +85,4 @@ def get_top_terms_of_turkiye():
         """
     result = client.query(query)
     return [dict(row) for row in result]
+
