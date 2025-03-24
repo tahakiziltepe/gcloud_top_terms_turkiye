@@ -20,9 +20,9 @@ def apiv1_top_terms_of_turkiye():
     try:
         result = bigquery_client.get_top_terms_of_turkiye()
         asyncio.run(send_message_chat.send_message("Run: /apiv1/top_terms_of_turkiye"))
-        return {'success': 'true', 'data': [dict(row) for row in result]}
+        return {'success': 'true', 'data': result}
     except Exception as e:
-        asyncio.run(send_message_chat.send_message("Error: /apiv1/top_terms_of_turkiye"))
+        asyncio.run(send_message_chat.send_message(f"Error: /apiv1/top_terms_of_turkiye {str(e)}"))
         return {'success': 'false', 'error': str(e)}
     
 @app.route("/top_terms_of_turkiye", methods=["GET"])
@@ -31,13 +31,11 @@ def top_terms_of_turkiye():
         top_terms_of_week = bigquery_client.get_top_terms_of_week_turkiye()
         top_terms_of_yesterday = bigquery_client.get_top_terms_of_yesterday_turkiye()
         asyncio.run(send_message_chat.send_message("Run: get_top_terms_of_turkiye"))
-        top_terms_of_week_list = [dict(row) for row in top_terms_of_week]
-        top_terms_of_yesterday_list = [dict(row) for row in top_terms_of_yesterday]
         return render_template("top_terms_of_turkiye.html", 
-                               top_terms_of_week=top_terms_of_week_list, 
-                               top_terms_of_yesterday=top_terms_of_yesterday_list)
+                               top_terms_of_week=top_terms_of_week, 
+                               top_terms_of_yesterday=top_terms_of_yesterday)
     except Exception as e:
-        asyncio.run(send_message_chat.send_message("Error: get_top_terms_of_turkiye"))
+        asyncio.run(send_message_chat.send_message(f"Error: get_top_terms_of_turkiye {str(e)}"))
         return {'success': 'false', 'error': str(e)}
 
 if __name__ == "__main__":

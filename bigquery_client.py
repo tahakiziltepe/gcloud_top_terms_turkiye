@@ -10,6 +10,7 @@ def query(query: str):
 
 def get_top_terms_of_week_turkiye():
     query = """
+        set @@query_label = 'project:top_terms,project_query:top_terms_of_week_turkiye';
         with max_week as (
             select max(week) max_week_column from `bigquery-public-data.google_trends.international_top_terms` where country_name = 'Turkey'
         )
@@ -23,10 +24,12 @@ def get_top_terms_of_week_turkiye():
         )
         select * from terms_of_week
         """
-    return client.query(query)
+    result = client.query(query)
+    return [dict(row) for row in result]
 
 def get_top_terms_of_yesterday_turkiye():
     query = """
+        set @@query_label = 'project:top_terms,project_query:top_terms_of_yesterday_turkiye';
         with max_week as (
             select max(week) max_week_column from `bigquery-public-data.google_trends.international_top_terms` where country_name = 'Turkey'
         )
@@ -40,11 +43,13 @@ def get_top_terms_of_yesterday_turkiye():
         )
         select * from terms_of_yesterday
         """
-    return client.query(query)
+    result = client.query(query)
+    return [dict(row) for row in result]
 
 
 def get_top_terms_of_turkiye():
     query = """
+        set @@query_label = 'project:top_terms,project_query:top_terms_of_turkiye';
         with max_week as (
             select max(week) max_week_column from `bigquery-public-data.google_trends.international_top_terms` where country_name = 'Turkey'
         )
@@ -68,4 +73,5 @@ def get_top_terms_of_turkiye():
         union all 
         select * from terms_of_yesterday
         """
-    return client.query(query)
+    result = client.query(query)
+    return [dict(row) for row in result]
