@@ -26,6 +26,7 @@ def get_top_terms_of_week_turkiye():
             group by all
         )
         select * from terms_of_week
+        order by `date`
         """
     result = client.query(query)
     return [dict(row) for row in result]
@@ -41,6 +42,7 @@ def get_top_terms_of_yesterday_turkiye():
             group by all
         )
         select * from terms_of_yesterday
+        order by `rank`
         """
     result = client.query(query)
     return [dict(row) for row in result]
